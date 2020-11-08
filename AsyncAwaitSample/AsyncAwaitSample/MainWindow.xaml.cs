@@ -18,6 +18,8 @@ namespace AsyncAwaitSample
 
         private void ExecuteSync_OnClick(object sender, RoutedEventArgs e)
         {
+            resultsWindow.Text = string.Empty;
+
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
             var results = DemoMethods.RunDownloadSync();
@@ -31,6 +33,8 @@ namespace AsyncAwaitSample
 
         private async void ExecuteAsync_OnClick(object sender, RoutedEventArgs e)
         {
+            resultsWindow.Text = string.Empty;
+
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
             var results = await DemoMethods.RunDownloadAsync();
@@ -44,6 +48,8 @@ namespace AsyncAwaitSample
 
         private async void ExecuteParallelAsync_OnClick(object sender, RoutedEventArgs e)
         {
+            resultsWindow.Text = string.Empty;
+
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
             var results = await DemoMethods.RunDownloadParallelAsync();

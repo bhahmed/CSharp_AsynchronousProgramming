@@ -14,6 +14,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="1" Margin="10 0" FontSize="28">
@@ -23,6 +24,7 @@
         <Button x:Name="executeAsync" Grid.Row="3" Margin="10" Padding="10" Click="ExecuteAsync_OnClick">Async Execute</Button>
         <Button x:Name="executeParallelAsync" Grid.Row="4" Margin="10" Padding="10" Click="ExecuteParallelAsync_OnClick">Parallel Async Execute</Button>
         <Button x:Name="cancel" Grid.Row="5" Margin="10" Padding="10" Click="Cancel_OnClick">Cancel Operation</Button>
-        <TextBlock x:Name="resultsWindow" Grid.Row="6" Margin="10"/>
+        <ProgressBar x:Name="progressBar" Grid.Row="6" Margin="10" Padding="10" Height="20"></ProgressBar>
+        <TextBlock x:Name="resultsWindow" Grid.Row="7" Margin="10"/>
     </Grid>
 </Window>

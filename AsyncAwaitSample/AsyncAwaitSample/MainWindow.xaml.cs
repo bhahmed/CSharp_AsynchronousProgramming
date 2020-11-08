@@ -33,17 +33,26 @@ namespace AsyncAwaitSample
 
         private async void ExecuteAsync_OnClick(object sender, RoutedEventArgs e)
         {
-            resultsWindow.Text = string.Empty;
+            
+
+            Progress<ProgressReportModel> progress = new Progress<ProgressReportModel>();
+            progress.ProgressChanged += ReportProgress;
 
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
-            var results = await DemoMethods.RunDownloadAsync();
+            var results = await DemoMethods.RunDownloadAsync(progress);
             ReportWebsiteInfo(results);
 
             watch.Stop();
             var elapsedMs = watch.ElapsedMilliseconds;
 
             resultsWindow.Text += $"Total execution time: {elapsedMs}";
+        }
+
+        private void ReportProgress(object sender, ProgressReportModel e)
+        {
+            progressBar.Value = e.PercentageComplete;
+            ReportWebsiteInfo(e.SitesDownloaded);
         }
 
         private async void ExecuteParallelAsync_OnClick(object sender, RoutedEventArgs e)
@@ -68,6 +77,7 @@ namespace AsyncAwaitSample
 
         private void ReportWebsiteInfo(List<WebsiteDataModel> data)
         {
+            resultsWindow.Text = string.Empty;
             foreach (WebsiteDataModel websiteDataModel in data)
             {
                 resultsWindow.Text +=

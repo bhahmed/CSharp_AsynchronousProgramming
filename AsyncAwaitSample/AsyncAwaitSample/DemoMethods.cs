@@ -41,15 +41,20 @@ namespace AsyncAwaitSample
             return output;
         }
 
-        public static async Task<List<WebsiteDataModel>> RunDownloadAsync()
+        public static async Task<List<WebsiteDataModel>> RunDownloadAsync(IProgress<ProgressReportModel> progress)
         {
             List<string> websites = PrepData();
             List<WebsiteDataModel> output = new List<WebsiteDataModel>();
+            ProgressReportModel report = new ProgressReportModel();
 
             foreach (var site in websites)
             {
                 WebsiteDataModel results = await DownloadWebsiteAsync(site);
                 output.Add(results);
+
+                report.SitesDownloaded = output;
+                report.PercentageComplete = output.Count * 100 / websites.Count;
+                progress.Report(report);
             }
 
             return output;

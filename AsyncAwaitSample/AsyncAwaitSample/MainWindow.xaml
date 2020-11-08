@@ -12,6 +12,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="1" Margin="10 0" FontSize="28">
@@ -19,6 +20,7 @@
         </TextBlock>
         <Button x:Name="executeSync" Grid.Row="2" Margin="10" Padding="10" Click="ExecuteSync_OnClick">Normal Execute</Button>
         <Button x:Name="executeAsync" Grid.Row="3" Margin="10" Padding="10" Click="ExecuteAsync_OnClick">Async Execute</Button>
-        <TextBlock x:Name="resultsWindow" Grid.Row="4" Margin="10"/>
+        <Button x:Name="executeParallelAsync" Grid.Row="4" Margin="10" Padding="10" Click="ExecuteParallelAsync_OnClick">Parallel Async Execute</Button>
+        <TextBlock x:Name="resultsWindow" Grid.Row="5" Margin="10"/>
     </Grid>
 </Window>

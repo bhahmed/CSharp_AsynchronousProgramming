@@ -25,7 +25,8 @@ namespace AsyncAwaitSample
 
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
-            var results = DemoMethods.RunDownloadSync();
+            // var results = DemoMethods.RunDownloadSync();
+            var results = DemoMethods.RunDownloadParallelSync();
             ReportWebsiteInfo(results);
 
             watch.Stop();
@@ -67,10 +68,13 @@ namespace AsyncAwaitSample
         private async void ExecuteParallelAsync_OnClick(object sender, RoutedEventArgs e)
         {
             resultsWindow.Text = string.Empty;
+            Progress<ProgressReportModel> progress = new Progress<ProgressReportModel>();
+            progress.ProgressChanged += ReportProgress;
 
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
-            var results = await DemoMethods.RunDownloadParallelAsync();
+            // var results = await DemoMethods.RunDownloadParallelAsync();
+            var results = await DemoMethods.RunDownloadParallelAsyncV2(progress);
             ReportWebsiteInfo(results);
 
             watch.Stop();

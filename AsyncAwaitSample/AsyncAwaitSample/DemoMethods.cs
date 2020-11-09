@@ -42,6 +42,42 @@ namespace AsyncAwaitSample
             return output;
         }
 
+        public static List<WebsiteDataModel> RunDownloadParallelSync()
+        {
+            List<string> websites = PrepData();
+            List<WebsiteDataModel> output = new List<WebsiteDataModel>();
+
+            Parallel.ForEach<string>(websites, (site) =>
+            {
+                WebsiteDataModel results = DownloadWebsite(site);
+                output.Add(results);
+            });
+
+            return output;
+        }
+
+        public static async Task<List<WebsiteDataModel>> RunDownloadParallelAsyncV2(IProgress<ProgressReportModel> progress)
+        {
+            List<string> websites = PrepData();
+            List<WebsiteDataModel> output = new List<WebsiteDataModel>();
+            ProgressReportModel report = new ProgressReportModel();
+
+            await Task.Run(() =>
+            {
+                Parallel.ForEach<string>(websites, (site) =>
+                {
+                    WebsiteDataModel results = DownloadWebsite(site);
+                    output.Add(results);
+
+                    report.SitesDownloaded = output;
+                    report.PercentageComplete = output.Count * 100 / websites.Count;
+                    progress.Report(report);
+                });
+            });
+            
+            return output;
+        }
+
         public static async Task<List<WebsiteDataModel>> RunDownloadAsync(IProgress<ProgressReportModel> progress, CancellationToken cancellationToken)
         {
             List<string> websites = PrepData();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -11,6 +12,8 @@ namespace AsyncAwaitSample
     /// </summary>
     public partial class MainWindow : Window
     {
+        CancellationTokenSource cts = new CancellationTokenSource();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -33,15 +36,21 @@ namespace AsyncAwaitSample
 
         private async void ExecuteAsync_OnClick(object sender, RoutedEventArgs e)
         {
-            
-
             Progress<ProgressReportModel> progress = new Progress<ProgressReportModel>();
             progress.ProgressChanged += ReportProgress;
 
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
-            var results = await DemoMethods.RunDownloadAsync(progress);
-            ReportWebsiteInfo(results);
+            try
+            {
+                var results = await DemoMethods.RunDownloadAsync(progress, cts.Token);
+                ReportWebsiteInfo(results);
+            }
+            catch (OperationCanceledException ex)
+            {
+                resultsWindow.Text += $"The async download was cancelled. {Environment.NewLine}";
+                cts = new CancellationTokenSource();
+            }
 
             watch.Stop();
             var elapsedMs = watch.ElapsedMilliseconds;
@@ -72,7 +81,7 @@ namespace AsyncAwaitSample
 
         private void Cancel_OnClick(object sender, RoutedEventArgs e)
         {
-            
+            cts.Cancel();
         }
 
         private void ReportWebsiteInfo(List<WebsiteDataModel> data)
